@@ -5,7 +5,7 @@
  * Created Date: 2019-10-21 17:46:39
  * Description : 
  * -----
- * Last Modified: 2019-10-22 16:21:42
+ * Last Modified: 2019-10-22 17:50:05
  * Modified By : 
  * -----
  * Copyright (c) 2019 芒果动听 Corporation. All rights reserved.
@@ -44,7 +44,8 @@ module.exports = merge(base, {
           //热加载
         hot: true,
         compress: true, //启用 gzip 压缩
-        quiet: true 
+        // quiet: true,
+        contentBase: path.join(__dirname, '../public')
     }
 })
 

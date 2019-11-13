@@ -5,7 +5,7 @@
  * Created Date: 2019-10-21 17:47:19
  * Description : 
  * -----
- * Last Modified: 2019-10-22 16:07:39
+ * Last Modified: 2019-11-13 11:48:49
  * Modified By : 
  * -----
  * Copyright (c) 2019 芒果动听 Corporation. All rights reserved.
@@ -15,7 +15,8 @@
 const merge = require('webpack-merge');
 const base = require('./webpack.conf.js');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin'); // 串行压缩
+const ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin'); // 并行压缩代码，增强性能
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const glob = require('glob-all');
 const PurifyCSSPlugin = require('purifycss-webpack');
@@ -24,7 +25,7 @@ const TerserPlugin = require('terser-webpack-plugin')
 
 module.exports = merge(base, {
     mode: 'production', // 压缩代码
-    output:{
+    output: {
         publicPath: "./"
     },
     optimization: {
@@ -39,16 +40,26 @@ module.exports = merge(base, {
         },
         runtimeChunk: true,
         minimizer: [
-            new UglifyJsPlugin({
-                cache: true,
-                parallel: true
+            // new UglifyJsPlugin({
+            //     cache: true,
+            //     parallel: true
+            // }),
+            new ParallelUglifyPlugin({
+                cacheDir: 'cache/',
+                uglifyJS: {
+                    output:false,
+                },
+                compress:{
+                    warnings: true,
+                    drop_console: true
+                }
             }),
             new OptimizeCSSAssetsPlugin(),
             new TerserPlugin({
                 terserOptions: {
-                  compress: {
-                    drop_console: true
-                  }
+                    compress: {
+                        drop_console: true
+                    }
                 }
             })
         ]

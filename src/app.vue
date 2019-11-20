@@ -5,7 +5,7 @@
  * Created Date: 2019-10-21 17:51:14
  * Description : 
  * -----
- * Last Modified: 2019-11-20 11:59:22
+ * Last Modified: 2019-11-20 13:43:57
  * Modified By : 
  * -----
  * Copyright (c) 2019 芒果动听 Corporation. All rights reserved.
@@ -28,6 +28,8 @@
 
 <script>
 import  '@/assets/app.styl'
+import  '@/assets/app.css'
+
 export default {
   data() {
     return {

@@ -5,7 +5,7 @@
  * Created Date: 2019-10-21 17:47:19
  * Description : 
  * -----
- * Last Modified: 2019-11-20 13:28:14
+ * Last Modified: 2019-11-20 14:04:04
  * Modified By : 
  * -----
  * Copyright (c) 2019 芒果动听 Corporation. All rights reserved.
@@ -15,41 +15,17 @@
 const merge = require('webpack-merge');
 const base = require('./webpack.conf.js');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin'); // 串行压缩
 const ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin'); // 并行压缩代码，增强性能
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const glob = require('glob-all');
 const PurifyCSSPlugin = require('purifycss-webpack');
 const path = require("path");
-const TerserPlugin = require('terser-webpack-plugin')
-const resolve = (dir) => {
-    return path.join(__dirname, '..', dir)
-}
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = merge(base, {
     mode: 'production', // 压缩代码
     output: {
         publicPath: "./"
-    },
-    module: {
-        rules: [
-            {
-                test: /\.css$/,
-                use: [MiniCssExtractPlugin.loader, "css-loader"], // 使用vue-style-loader直接插入到style标签中
-                // use: ["vue-style-loader", "css-loader", "postcss-loader"], // 使用vue-style-loader直接插入到style标签中
-
-                exclude: /node_modules/,
-                include: [resolve('src')]
-            },
-            {
-                test: /\.styl(us)?$/,
-                use: [MiniCssExtractPlugin.loader, "css-loader", "stylus-loader"],
-                // use: [ "css-loader", 'postcss-loader', "stylus-loader"],
-
-                exclude: /node_modules/,
-                include: [resolve('src')]
-            },
-        ]
     },
     optimization: {
         splitChunks: {
@@ -69,10 +45,6 @@ module.exports = merge(base, {
         },
         runtimeChunk: true,
         minimizer: [
-            // new UglifyJsPlugin({
-            //     cache: true,
-            //     parallel: true
-            // }),
             new ParallelUglifyPlugin({
                 cacheDir: 'cache/',
                 uglifyJS: {
@@ -94,17 +66,18 @@ module.exports = merge(base, {
         ]
     },
     plugins: [
+        new MiniCssExtractPlugin({
+            filename: 'css/[name].[hash].css',
+            chunkFilename: 'css/[id].[hash].css',
+        }),
         new PurifyCSSPlugin({
             paths: glob.sync([
-                path.join(__dirname, '../src/')
+                path.join(__dirname, '../src/*'),
+                path.join(__dirname, '../index.html'),
             ]),
             purifyOptions: {
                 whitelist: ['*purify*']
             }
-        }),
-        new MiniCssExtractPlugin({
-            filename:  'css/[name].[hash].css',
-            chunkFilename:  'css/[id].[hash].css',
         }),
     ],
 })

@@ -5,7 +5,7 @@
  * Created Date: 2019-10-21 17:47:19
  * Description : 
  * -----
- * Last Modified: 2019-11-13 11:48:49
+ * Last Modified: 2019-11-20 10:10:31
  * Modified By : 
  * -----
  * Copyright (c) 2019 芒果动听 Corporation. All rights reserved.
@@ -35,8 +35,14 @@ module.exports = merge(base, {
                     test: /[\\/]node_modules[\\/]/,
                     name: 'vendors',
                     chunks: 'all'
-                }
-            }
+                },
+                styles: {
+                    name: 'styles',
+                    test: /\.css$/,
+                    chunks: 'all',
+                    enforce: true,
+                  },
+            },
         },
         runtimeChunk: true,
         minimizer: [
@@ -54,7 +60,7 @@ module.exports = merge(base, {
                     drop_console: true
                 }
             }),
-            new OptimizeCSSAssetsPlugin(),
+            new OptimizeCSSAssetsPlugin({}),
             new TerserPlugin({
                 terserOptions: {
                     compress: {
@@ -65,9 +71,10 @@ module.exports = merge(base, {
         ]
     },
     plugins: [
-        new MiniCssExtractPlugin(new MiniCssExtractPlugin({
-            filename: "css/[name]_[contenthash].css"
-        })),
+        new MiniCssExtractPlugin({
+            filename: '[name].css',
+            chunkFilename: '[id].css',
+        }),
         new PurifyCSSPlugin({
             paths: glob.sync([
                 path.join(__dirname, '../src/')
@@ -76,5 +83,13 @@ module.exports = merge(base, {
                 whitelist: ['*purify*']
             }
         }),
-    ]
+    ],
+    module: {
+        rules: [
+            {
+              test: /\.css$/,
+              use: [MiniCssExtractPlugin.loader, 'css-loader'],
+            }
+          ]
+      }
 })

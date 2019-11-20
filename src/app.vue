@@ -5,7 +5,7 @@
  * Created Date: 2019-10-21 17:51:14
  * Description : 
  * -----
- * Last Modified: 2019-10-22 15:44:09
+ * Last Modified: 2019-11-20 11:59:22
  * Modified By : 
  * -----
  * Copyright (c) 2019 芒果动听 Corporation. All rights reserved.
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import  '@/assets/app.styl'
 export default {
   data() {
     return {

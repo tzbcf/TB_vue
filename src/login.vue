@@ -5,7 +5,7 @@
  * Created Date: 2019-10-22 15:45:40
  * Description : 
  * -----
- * Last Modified: 2019-10-22 16:03:00
+ * Last Modified: 2019-11-20 11:53:03
  * Modified By : 
  * -----
  * Copyright (c) 2019 芒果动听 Corporation. All rights reserved.
@@ -14,7 +14,7 @@
 
 <template>
     <div class="aa">
-        asdadad
+        asdadadasdafdfdsadgsg
     </div>
 </template>
 
@@ -35,3 +35,7 @@ export default {
 }
 </script>
 
+<style lang="stylus" scoped>
+.aa 
+    font-size 60px
+</style>

@@ -26,6 +26,7 @@
     "mini-css-extract-plugin": "^0.8.0",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "postcss-loader": "^3.0.0",
+    "progress-bar-webpack-plugin": "^1.12.1",
     "purify-css": "^1.2.5",
     "purifycss-webpack": "^0.7.0",
     "resolve": "^1.12.0",

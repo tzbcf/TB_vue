@@ -5,7 +5,7 @@
  * Created Date: 2019-10-21 17:47:19
  * Description : 
  * -----
- * Last Modified: 2019-11-20 10:10:31
+ * Last Modified: 2019-11-20 11:48:18
  * Modified By : 
  * -----
  * Copyright (c) 2019 芒果动听 Corporation. All rights reserved.
@@ -22,11 +22,30 @@ const glob = require('glob-all');
 const PurifyCSSPlugin = require('purifycss-webpack');
 const path = require("path");
 const TerserPlugin = require('terser-webpack-plugin')
+const resolve = (dir) => {
+    return path.join(__dirname, '..', dir)
+}
 
 module.exports = merge(base, {
     mode: 'production', // 压缩代码
     output: {
         publicPath: "./"
+    },
+    module: {
+        rules: [
+            {
+                test: /\.css$/,
+                use: [MiniCssExtractPlugin.loader, "css-loader"], // 使用vue-style-loader直接插入到style标签中
+                exclude: /node_modules/,
+                include: [resolve('src')]
+            },
+            {
+                test: /\.styl(us)?$/,
+                use: [MiniCssExtractPlugin.loader, "css-loader", "stylus-loader"],
+                exclude: /node_modules/,
+                include: [resolve('src')]
+            },
+        ]
     },
     optimization: {
         splitChunks: {
@@ -41,7 +60,7 @@ module.exports = merge(base, {
                     test: /\.css$/,
                     chunks: 'all',
                     enforce: true,
-                  },
+                },
             },
         },
         runtimeChunk: true,
@@ -53,9 +72,9 @@ module.exports = merge(base, {
             new ParallelUglifyPlugin({
                 cacheDir: 'cache/',
                 uglifyJS: {
-                    output:false,
+                    output: false,
                 },
-                compress:{
+                compress: {
                     warnings: true,
                     drop_console: true
                 }
@@ -71,10 +90,6 @@ module.exports = merge(base, {
         ]
     },
     plugins: [
-        new MiniCssExtractPlugin({
-            filename: '[name].css',
-            chunkFilename: '[id].css',
-        }),
         new PurifyCSSPlugin({
             paths: glob.sync([
                 path.join(__dirname, '../src/')
@@ -83,13 +98,9 @@ module.exports = merge(base, {
                 whitelist: ['*purify*']
             }
         }),
+        new MiniCssExtractPlugin({
+            filename:  'css/[name].[hash].css',
+            chunkFilename:  'css/[id].[hash].css',
+        }),
     ],
-    module: {
-        rules: [
-            {
-              test: /\.css$/,
-              use: [MiniCssExtractPlugin.loader, 'css-loader'],
-            }
-          ]
-      }
 })

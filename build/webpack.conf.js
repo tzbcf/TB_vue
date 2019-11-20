@@ -5,7 +5,7 @@
  * Created Date: 2019-10-21 17:37:22
  * Description :
  * -----
- * Last Modified: 2019-11-13 11:37:43
+ * Last Modified: 2019-11-20 11:39:20
  * Modified By :
  * -----
  * Copyright (c) 2019 芒果动听 Corporation. All rights reserved.
@@ -17,6 +17,7 @@ const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require('webpack');
 const HappyPack = require('happypack');
+const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const os = require('os');
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 const vueLoaderConfig = require("./vue-loader.conf");
@@ -39,18 +40,6 @@ module.exports = {
                 exclude: /node_modules\/(?!(autotrack|dom-utils))|vendor\.dll\.js/
             },
             {
-                test: /\.css$/,
-                use: ["vue-style-loader", "css-loader"], // 使用vue-style-loader直接插入到style标签中
-                exclude: /node_modules/,
-                include: [resolve('src')]
-            },
-            {
-                test: /\.styl(us)?$/,
-                loader: 'style-loader!css-loader!stylus-loader',
-                exclude: /node_modules/,
-                include: [resolve('src')]
-            },
-            {
                 test: /\.(png|jpg|gif)$/,
                 loader: "url-loader?name=images/[name]-[contenthash:5].[ext]&limit=2000",
                 exclude: /node_modules/,
@@ -69,6 +58,8 @@ module.exports = {
         path: path.resolve(__dirname, "../dist"),
     },
     plugins: [
+        new CleanWebpackPlugin(),
+        new ProgressBarPlugin(),
         new HappyPack({
             //用id来标识 happypack处理那里类文件
             id: 'happyBabel',
@@ -91,7 +82,6 @@ module.exports = {
                 NODE_ENV: JSON.stringify(process.env.NODE_ENV)
             }
         }),
-        new CleanWebpackPlugin()
     ],
     resolve: {
         extensions: ['.js', '.vue', '.json'],

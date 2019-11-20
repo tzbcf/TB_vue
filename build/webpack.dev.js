@@ -5,7 +5,7 @@
  * Created Date: 2019-10-21 17:46:39
  * Description : 
  * -----
- * Last Modified: 2019-11-20 11:44:14
+ * Last Modified: 2019-11-20 15:25:18
  * Modified By : 
  * -----
  * Copyright (c) 2019 芒果动听 Corporation. All rights reserved.
@@ -23,22 +23,6 @@ module.exports = merge(base, {
     devtool: 'source-map', // 提供源码映射文件调试使用
     output: {
         publicPath: "/"
-    },
-    module: {
-        rules: [
-            {
-                test: /\.css$/,
-                use: ["vue-style-loader", "css-loader", "postcss-loader"], // 使用vue-style-loader直接插入到style标签中
-                exclude: /node_modules/,
-                include: [resolve('src')]
-            },
-            {
-                test: /\.styl(us)?$/,
-                use: ["vue-style-loader", "css-loader", 'postcss-loader', "stylus-loader"],
-                exclude: /node_modules/,
-                include: [resolve('src')]
-            },
-        ]
     },
     optimization: {
         splitChunks: {

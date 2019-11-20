@@ -5,7 +5,7 @@
  * Created Date: 2019-10-21 17:37:22
  * Description :
  * -----
- * Last Modified: 2019-11-20 13:48:41
+ * Last Modified: 2019-11-20 15:33:55
  * Modified By :
  * -----
  * Copyright (c) 2019 芒果动听 Corporation. All rights reserved.
@@ -44,16 +44,12 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: [isProd ? MiniCssExtractPlugin.loader : "vue-style-loader", "css-loader","postcss-loader"], // 使用vue-style-loader直接插入到style标签中
-                // use: ["vue-style-loader", "css-loader", "postcss-loader"], // 使用vue-style-loader直接插入到style标签中
-
                 exclude: /node_modules/,
                 include: [resolve('src')]
             },
             {
                 test: /\.styl(us)?$/,
-                use: [isProd ? MiniCssExtractPlugin.loader : "vue-style-loader", "css-loader","postcss-loader", "stylus-loader"],
-                // use: [ "css-loader", 'postcss-loader', "stylus-loader"],
-
+                use: [isProd ? MiniCssExtractPlugin.loader : "vue-style-loader", "css-loader","postcss-loader","stylus-loader"],
                 exclude: /node_modules/,
                 include: [resolve('src')]
             },
@@ -72,7 +68,7 @@ module.exports = {
         ]
     },
     output: {
-        filename: "[name].[hash].js",
+        filename: "js/[name].[hash].js",
         path: path.resolve(__dirname, "../dist"),
     },
     plugins: [
